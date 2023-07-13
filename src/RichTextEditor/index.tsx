@@ -76,15 +76,7 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
   function onTextChanged(editorState: EditorState) {
     if (initialConfigs.fields) {
       setEditorState(
-        highlightMacro(
-          editorState,
-          false,
-          userTag,
-          decoratedTag,
-          userDecoratedTag,
-          TAG_EXP,
-          tag
-        )
+        highlightMacro(editorState, false, userTag, decoratedTag, TAG_EXP)
       );
     } else {
       setEditorState(editorState);
@@ -100,7 +92,6 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
 
     let selection = editorStateValue.getSelection();
     contentState = Modifier.removeRange(contentState, selection, "forward");
-    console.log("content", contentState);
 
     editorStateValue = EditorState.push(
       editorStateValue,
@@ -136,9 +127,7 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
       false,
       userTag,
       decoratedTag,
-      userDecoratedTag,
-      TAG_EXP,
-      tag
+      TAG_EXP
     );
     editorStateValue = EditorState.forceSelection(editorStateValue, selection);
     setEditorState(editorStateValue);
@@ -164,15 +153,15 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
     let editorState = whatsappToEditorState(markupText);
 
     if (decoratedTag) {
-      editorState = highlightMacro(
-        editorState,
-        true,
-        userTag,
-        decoratedTag,
-        userDecoratedTag,
-        TAG_EXP,
-        tag
-      );
+      decoratedTag.map((decoratedTagItem) => {
+        editorState = highlightMacro(
+          editorState,
+          true,
+          userTag,
+          decoratedTag,
+          TAG_EXP
+        );
+      });
     }
 
     setEditorState(editorState);
@@ -235,7 +224,7 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
   }
 
   function onBeforeScopeUpdate() {
-    validate();
+    validate(true);
   }
 
   return (
@@ -257,7 +246,7 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
           </RichText.Content>
         </RichText.Root>
 
-        {/* <Box mt={4}>
+        <Box mt={4}>
           <Typography>Texto convertido para HTML</Typography>
           <TextField
             disabled
@@ -266,7 +255,7 @@ export default function RichTextEditor({ initialConfigs }: RichTextProps) {
             type="textarea"
             value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
           />
-        </Box> */}
+        </Box>
       </Container>
     </Stack>
   );

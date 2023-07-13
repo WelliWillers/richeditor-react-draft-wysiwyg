@@ -12,9 +12,7 @@ export function highlightMacro(
   all: boolean,
   userTag: string[],
   decoratedTag: string[],
-  userDecoratedTag: string[],
-  TAG_EXP: RegExp,
-  tag: string
+  TAG_EXP: RegExp
 ) {
   const previousSelection = editorState.getSelection();
 
@@ -37,13 +35,15 @@ export function highlightMacro(
     const editionBlock = editorState
       .getCurrentContent()
       .getBlockForKey(previousSelection.getStartKey());
+
     if (editionBlock) {
       blocks.push(editionBlock);
     }
   }
 
   for (let block of blocks) {
-    const text = getText(editorState, userTag, decoratedTag, TAG_EXP, tag);
+    const text = getText(editorState, userTag, decoratedTag, TAG_EXP);
+
     // Format valid tags
     let i = 0;
     decoratedTag.map((decoratedTagItem) => {
@@ -54,9 +54,6 @@ export function highlightMacro(
           const rangeEndIndex = rangeStartIndex + decoratedTagItem.length;
           const tagBodyIndex = rangeStartIndex + 2;
           const tabBodyEndIndex = rangeEndIndex - 2;
-
-          console.log("tagBodyIndex", tagBodyIndex);
-          console.log("tabBodyEndIndex", tabBodyEndIndex);
 
           editorState = EditorStateUtils.applyStyleIfNeeded(
             editorState,
@@ -248,13 +245,13 @@ export function highlightMacro(
   }
 
   if (changed[0]) {
-    // editorState = EditorState.createEmpty({
-    //   currentContent: editorState.getCurrentContent(),
-    //   undoStack,
-    //   redoStack,
-    //   decorator,
-    //   selection: previousSelection,
-    // });
+    editorState = EditorState.create({
+      currentContent: editorState.getCurrentContent(),
+      undoStack,
+      redoStack,
+      decorator,
+      selection: previousSelection,
+    });
   }
 
   return editorState;

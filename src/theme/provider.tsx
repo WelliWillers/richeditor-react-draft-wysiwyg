@@ -4,12 +4,9 @@ import {
   StyledEngineProvider,
 } from "@mui/material/styles";
 import { theme } from "./theme";
-import { DialogContextProvider } from "@/contexts/DialogContext";
 
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => (
   <StyledEngineProvider injectFirst>
-    <DialogContextProvider>
-      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
-    </DialogContextProvider>
+    <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
   </StyledEngineProvider>
 );

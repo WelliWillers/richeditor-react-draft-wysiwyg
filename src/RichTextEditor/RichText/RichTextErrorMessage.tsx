@@ -1,11 +1,9 @@
 import clsx from "clsx";
 import { getOrMakeStyles } from "./RichTextEditorStyles";
 import { TagProps } from "..";
-import { IconButton, MenuItem, MenuList, Typography } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
-import { useDialog } from "@/hooks/useDialog";
-import { useRef } from "react";
-import { DialogBase } from "@/components/Dialog";
+import { useState } from "react";
 
 interface RichTextErrorMessageProps {
   className?: string;
@@ -22,9 +20,15 @@ export default function RichTextErrorMessage({
   onTagClicked,
 }: RichTextErrorMessageProps) {
   const { classes: styles } = getOrMakeStyles();
-  const variablesRef = useRef<HTMLDivElement>();
-  const { dialogRef, handleOpenDialog, isOpen, handleCloseDialog } =
-    useDialog();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   if (status && status.text) {
     const tags = status?.tags ?? [];
@@ -32,33 +36,32 @@ export default function RichTextErrorMessage({
     return (
       <>
         <div className={clsx(styles.view, className)}>
-          <IconButton
-            sx={{ ml: "auto" }}
-            onClick={() => handleOpenDialog(variablesRef)}
-          >
+          <IconButton sx={{ ml: "auto" }} onClick={handleClick}>
             <CodeIcon />
           </IconButton>
 
-          <DialogBase
-            open={dialogRef === variablesRef ? isOpen : false}
-            maxWidth={"xs"}
-            fullWidth
-            title={"Selecionar variável"}
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
           >
-            <MenuList>
-              {tags.length > 0
-                ? tags.map((tag, i) => (
-                    <MenuItem
-                      key={i}
-                      onClick={onTagClicked?.bind(undefined, `{{${tag.name}}}`)}
-                    >
-                      {tag.name}
-                    </MenuItem>
-                  ))
-                : undefined}
-            </MenuList>
-          </DialogBase>
+            {tags.length > 0
+              ? tags.map((tag, i) => (
+                  <MenuItem
+                    key={i}
+                    onClick={onTagClicked?.bind(undefined, `{{${tag.name}}}`)}
+                  >
+                    {tag.name}
+                  </MenuItem>
+                ))
+              : undefined}
+          </Menu>
         </div>
+
         <Typography mt={1} className={styles.adjustErrorMessage}>
           {status.text}
         </Typography>

@@ -59,6 +59,7 @@ export default function RichTextContent({
             options: ["bold", "italic"],
           },
           emoji: {
+            component: undefined,
             className: styles.toolbarButtons,
             popupClassName: styles.emojiPopup,
           },
