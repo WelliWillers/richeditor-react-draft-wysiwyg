@@ -1,24 +1,8 @@
-import { ReactNode, useRef } from "react";
-import { Editor, EditorState } from "react-draft-wysiwyg";
+import { useRef } from "react";
+import { Editor } from "react-draft-wysiwyg";
 import { getOrMakeStyles } from "./RichTextEditorStyles";
 import { Box } from "@mui/material";
-import { TagProps } from "..";
-import CodeIcon from "@mui/icons-material/Code";
-
-interface RichTextContentProps {
-  children: ReactNode;
-  scope: {
-    caption: string;
-    text: EditorState;
-    status: {
-      text: string;
-      tags?: TagProps[];
-    } | null;
-    focus: boolean;
-    onChanged: (p0: EditorState) => void;
-    onTagClicked: (p: string) => void;
-  };
-}
+import { RichTextContentProps } from "@/types";
 
 export default function RichTextContent({
   scope,
@@ -39,6 +23,15 @@ export default function RichTextContent({
 
   const { classes: styles } = getOrMakeStyles();
 
+  const sugestionOtion = scope.status?.tags?.map((field) => {
+    const item = {
+      text: field.field,
+      value: field.name,
+    };
+
+    return item;
+  });
+
   return (
     <Box className={styles.editorInput} ref={editorContainerRef}>
       <Editor
@@ -48,6 +41,9 @@ export default function RichTextContent({
         wrapperStyle={{
           display: "flex",
           flexDirection: "column-reverse",
+        }}
+        localization={{
+          locale: "pt",
         }}
         editorClassName={styles.editorConfiguration}
         toolbarClassName={styles.toolbarConfiguration}
@@ -68,10 +64,13 @@ export default function RichTextContent({
             redo: { className: styles.toolbarButtons },
           },
         }}
+        mention={{
+          separator: " ",
+          trigger: "#",
+          suggestions: sugestionOtion ? sugestionOtion : [],
+        }}
       />
-      <Box className={styles.errorMessageRelativeToToolbar}>
-        {scope.status?.text ? children : <></>}
-      </Box>
+      <Box className={styles.errorMessageRelativeToToolbar}>{children}</Box>
     </Box>
   );
 }

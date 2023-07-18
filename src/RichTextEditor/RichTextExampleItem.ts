@@ -3,7 +3,7 @@ export const exampleItem = {
   description: "Mensagem de agendamento criado ou reagendado com sucesso.",
   key: "INFO_SUCCESSFULLY_CREATED_SCHEDULE_WITH_INFO",
   defaultMessage:
-    "\n*Agendamento confirmado*\n\nQuando: ###DATA_SELECIONADA às *###HORARIO_SELECIONADO*\nOnde: *###DESCRICAO_EMPRESA*\n\nA pessoa que lhe atenderá se chama *###CONSULTOR*\n\nProtocolo: *###ID*\nServiço: *###DESCRICAO_SERVICO*\nPlaca: *###PLACA_VEICULO*\n\nPedimos que retire seus pertences pessoais do veículo e leve o manual de garantia.\n",
+    "\n*Agendamento confirmado*\n\nQuando: *###DATA_SELECIONADA* às *###HORARIO_SELECIONADO*\nOnde: *###DESCRICAO_EMPRESA*\n\nA pessoa que lhe atenderá se chama *###CONSULTOR*\n\nProtocolo: *###ID*\nServiço: *###DESCRICAO_SERVICO*\nPlaca: *###PLACA_VEICULO*\n\nPedimos que retire seus pertences pessoais do veículo e leve o manual de garantia.\n",
   fields: [
     {
       field: "DATA_SELECIONADA",

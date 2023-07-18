@@ -7,11 +7,14 @@ type Tag = {
 };
 
 const styleCharMap = new Map<string, Tag>([
-  ["*", { name: "b", mark: "*" }], // bold: *text*
-  ["~", { name: "s", mark: "~" }], // Strikethrough: ~text~
-  ["_", { name: "i", mark: "_" }], // italic: _text_
-  ["`", { name: "pre", mark: "```" }], // Monospace: ```text```
+  ["*", { name: "b", mark: "*" }],
+  ["~", { name: "s", mark: "~" }],
+  ["_", { name: "i", mark: "_" }],
+  ["#", { name: "a", mark: "#" }],
+  ["`", { name: "pre", mark: "```" }],
 ]);
+
+//<a href="undefined" class="wysiwyg-mention" data-mention data-value="Hora selecionada">#Hora selecionada</a>
 
 function processSegment(target: string[], segment: string) {
   if (!segment) {
@@ -25,6 +28,7 @@ function processSegment(target: string[], segment: string) {
     const iChar = segment.charAt(i);
 
     const tag = styleCharMap.get(iChar);
+
     if (
       tag &&
       (tag.mark.length === 1 ||
@@ -41,9 +45,25 @@ function processSegment(target: string[], segment: string) {
               target.push(lodash.escape(buffer.join("")));
               buffer.length = 0;
             }
-
-            target.push(`<${tag.name}>`);
-            processSegment(target, segment.substring(i + tag.mark.length, j));
+            target.push(
+              `<${tag.name} ${
+                tag.name === "a"
+                  ? `class="wysiwyg-mention" href="${undefined}"`
+                  : ""
+              } ${tag.name === "a" && "data-mention"}
+              data-value="${
+                tag.name === "a"
+                  ? `#${segment.substring(i + tag.mark.length, j)}`
+                  : segment.substring(i + tag.mark.length, j)
+              }"
+              >`
+            );
+            processSegment(
+              target,
+              tag.name === "a"
+                ? `#${segment.substring(i + tag.mark.length, j)}`
+                : segment.substring(i + tag.mark.length, j)
+            );
             target.push(`</${tag.name}>`);
 
             i = j + tag.mark.length;
@@ -76,7 +96,7 @@ export function whatsappToEditorState(whastappText: string): EditorState {
       html.push(paragraph.join(""));
       html.push("<br/>");
     }
-
+    console.log("html", html);
     const blocksFromHTML = convertFromHTML(html.join(""));
 
     return EditorState.createWithContent(

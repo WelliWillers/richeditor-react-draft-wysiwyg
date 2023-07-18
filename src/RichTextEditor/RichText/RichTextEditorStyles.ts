@@ -81,13 +81,20 @@ export const getOrMakeStyles = makeStyles()(() => ({
     color: grey[700],
     letterSpacing: 0.15,
     lineHeight: 1.5,
-    minHeight: 44,
+    minHeight: 100,
     border: "transparent",
-    paddingTop: 10,
-    paddingLeft: 10,
+    padding: 10,
 
     "& .public-DraftStyleDefault-block": {
       margin: "0!important",
+    },
+
+    "& a": {
+      textDecoration: "none",
+      color: "#1236ff",
+      backgroundColor: "#f0fbff",
+      padding: "1px 2px",
+      borderRadius: "2px",
     },
   },
   toolbarConfiguration: {
@@ -116,12 +123,12 @@ export const getOrMakeStyles = makeStyles()(() => ({
     },
   },
   emojiPopup: {
-    // left: "initial!important",
-    // right: 1,
+    left: "initial!important",
+    right: 1,
   },
   errorMessageRelativeToToolbar: {
     position: "absolute",
-    bottom: -8,
+    bottom: -10,
     left: 10,
     right: 220,
     textOverflow: "ellipsis",
@@ -132,6 +139,7 @@ export const getOrMakeStyles = makeStyles()(() => ({
   view: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "flex-start",
   },
   adjustErrorMessage: {
     fontFamily: defaultFont,

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import clsx from "clsx";
 import { ReactNode } from "react";
 import { getOrMakeStyles } from "./RichTextEditorStyles";
-import { TagProps } from "..";
+import { TagProps } from "@/types";
 
 interface RichTextRootProps {
   children: ReactNode;

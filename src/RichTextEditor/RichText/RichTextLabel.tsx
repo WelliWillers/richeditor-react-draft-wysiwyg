@@ -1,9 +1,7 @@
-import { theme } from "@/theme";
-import { Box, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import { Typography } from "@mui/material";
 import clsx from "clsx";
 import { getOrMakeStyles } from "./RichTextEditorStyles";
-import { TagProps } from "..";
+import { TagProps } from "@/types";
 
 interface RichTextLabelProps {
   caption: string;

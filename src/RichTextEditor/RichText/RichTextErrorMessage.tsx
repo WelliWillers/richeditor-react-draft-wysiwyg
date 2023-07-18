@@ -1,73 +1,47 @@
 import clsx from "clsx";
 import { getOrMakeStyles } from "./RichTextEditorStyles";
-import { TagProps } from "..";
-import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import CodeIcon from "@mui/icons-material/Code";
-import { useState } from "react";
+import { TagProps } from "@/types";
+import { Box, Typography } from "@mui/material";
+import { theme } from "@/theme";
 
 interface RichTextErrorMessageProps {
   className?: string;
+  hint?: string;
   status?: {
     text: string;
     tags?: TagProps[];
   } | null;
-  onTagClicked?: (tag: string) => void;
 }
 
 export default function RichTextErrorMessage({
   className,
+  hint,
   status,
-  onTagClicked,
 }: RichTextErrorMessageProps) {
   const { classes: styles } = getOrMakeStyles();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const tags = status?.tags ?? [];
 
-  if (status && status.text) {
-    const tags = status?.tags ?? [];
-
-    return (
-      <>
-        <div className={clsx(styles.view, className)}>
-          <IconButton sx={{ ml: "auto" }} onClick={handleClick}>
-            <CodeIcon />
-          </IconButton>
-
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            {tags.length > 0
-              ? tags.map((tag, i) => (
-                  <MenuItem
-                    key={i}
-                    onClick={onTagClicked?.bind(undefined, `{{${tag.name}}}`)}
-                  >
-                    {tag.name}
-                  </MenuItem>
-                ))
-              : undefined}
-          </Menu>
-        </div>
-
-        <Typography mt={1} className={styles.adjustErrorMessage}>
-          {status.text}
+  return (
+    <div className={clsx(styles.view, className)}>
+      <Box display={"flex"} flexDirection={"column"}>
+        <Typography variant="caption" color={theme.palette.text.secondary}>
+          {hint}
         </Typography>
-      </>
-    );
-  } else {
-    return <></>;
-  }
+
+        {status && status.text ? (
+          <Typography mt={"20px"} className={styles.adjustErrorMessage}>
+            {status.text}&nbsp;
+            <b>
+              {tags.length > 0
+                ? tags.map((tag, i) => `#` + tag.name).join(", ")
+                : undefined}
+            </b>
+          </Typography>
+        ) : (
+          <Typography>dawd</Typography>
+        )}
+      </Box>
+    </div>
+  );
 }
