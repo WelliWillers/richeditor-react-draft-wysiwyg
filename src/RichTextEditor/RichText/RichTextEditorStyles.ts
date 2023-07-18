@@ -89,6 +89,10 @@ export const getOrMakeStyles = makeStyles()(() => ({
       margin: "0!important",
     },
 
+    "& .rdw-link-decorator-icon": {
+      display: "none",
+    },
+
     "& a": {
       textDecoration: "none",
       color: "#1236ff",

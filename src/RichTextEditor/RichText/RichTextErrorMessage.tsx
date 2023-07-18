@@ -25,7 +25,11 @@ export default function RichTextErrorMessage({
   return (
     <div className={clsx(styles.view, className)}>
       <Box display={"flex"} flexDirection={"column"}>
-        <Typography variant="caption" color={theme.palette.text.secondary}>
+        <Typography
+          mb={!status?.text ? "39px" : "0px"}
+          variant="caption"
+          color={theme.palette.text.secondary}
+        >
           {hint}
         </Typography>
 
@@ -39,7 +43,7 @@ export default function RichTextErrorMessage({
             </b>
           </Typography>
         ) : (
-          <Typography>dawd</Typography>
+          <></>
         )}
       </Box>
     </div>

@@ -1,37 +1,27 @@
 export const exampleItem = {
-  title: "Agendamento criado ou reagendado com sucesso",
-  description: "Mensagem de agendamento criado ou reagendado com sucesso.",
-  key: "INFO_SUCCESSFULLY_CREATED_SCHEDULE_WITH_INFO",
+  title: "Horários para o agendamento",
+  description: "Pergunta de horários para o agendamento.",
+  key: "ASK_DESIRED_TIME",
   defaultMessage:
-    "\n*Agendamento confirmado*\n\nQuando: *###DATA_SELECIONADA* às *###HORARIO_SELECIONADO*\nOnde: *###DESCRICAO_EMPRESA*\n\nA pessoa que lhe atenderá se chama *###CONSULTOR*\n\nProtocolo: *###ID*\nServiço: *###DESCRICAO_SERVICO*\nPlaca: *###PLACA_VEICULO*\n\nPedimos que retire seus pertences pessoais do veículo e leve o manual de garantia.\n",
+    "Ótimo! Encontrei alguns horários disponíveis no dia *###ARG_1*:\n\n ###OPTIONS\nSelecione o horário desejado informando o número correspondente ou digite uma nova data (Ex.: *###ARG_2*) para verificarmos a disponibilidade.",
   fields: [
     {
-      field: "DATA_SELECIONADA",
-      name: "Data selecionada",
+      field: "ARG_1",
+      name: "Primeiro argumento",
     },
     {
-      field: "HORARIO_SELECIONADO",
-      name: "Hora selecionada",
+      field: "OPTIONS",
+      name: "Opções",
     },
     {
-      field: "DESCRICAO_EMPRESA",
-      name: "Empresa",
+      field: "ARG_2",
+      name: "Segundo argumento",
     },
+  ],
+  relatedMessages: [
     {
-      field: "CONSULTOR",
-      name: "Consultor",
-    },
-    {
-      field: "ID",
-      name: "Número do evento",
-    },
-    {
-      field: "DESCRICAO_SERVICO",
-      name: "Serviço",
-    },
-    {
-      field: "PLACA_VEICULO",
-      name: "Placa",
+      key: "INTERACTIVE_ASK_DESIRED_TIME",
+      unusedFields: ["OPTIONS"],
     },
   ],
   message: "",
